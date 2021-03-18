@@ -49,9 +49,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Width="8"
+            <Border Width="0"
 					Background="#E2E3E3"/>
-            <Border Grid.Column="1" MinWidth="50"  BorderBrush="#858585" Background="Transparent" BorderThickness="0.5">
+            <Border Grid.Column="1" MinWidth="50"  BorderBrush="#027EFF" Background="Transparent" BorderThickness="2" CornerRadius="2">
 
             </Border>
             <Border Grid.Column="1"  BorderBrush="#858585"  
@@ -68,11 +68,16 @@
                 <TextBlock Grid.Column="1"
 					   Text="{Binding url}"
 					   Margin="5 5 5 5" HorizontalAlignment="Center"
-					   TextAlignment="Center" Opacity="0.8"
+					   TextAlignment="Center" Opacity="1"
 					   FontFamily="Segoe UI"
-					   FontSize="14"
-                        Foreground="Black"
+					   FontSize="16"
 					   VerticalAlignment="Center">
+                    <TextBlock.Foreground>
+                    <Binding Path="IsSelected" 
+							 RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}"
+							 Converter="{StaticResource BoolToParameterConditionalConverter}"
+							 ConverterParameter="#FFFFFF:#027EFF" />
+                </TextBlock.Foreground>
 
                 </TextBlock>
             </Grid>
@@ -88,10 +93,10 @@
 
             <Border Width="1"
 					Background="#E2E3E3"/>
-            <Border Grid.Column="1" MinWidth="50"  BorderBrush="#858585" Background="Transparent" BorderThickness="0.5">
+            <Border Grid.Column="1" MinWidth="100"  BorderBrush="#027EFF" Background="Transparent" BorderThickness="2" CornerRadius="2">
 
             </Border>
-            <Border Grid.Column="1"  BorderBrush="#858585"  
+            <Border Grid.Column="1"  BorderBrush="#027EFF"  
 					Background="#027EFF">
                 <Border.Opacity>
                     <Binding Path="IsSelected" 
@@ -105,11 +110,17 @@
                 <TextBlock Grid.Column="1"
 					   Text="{Binding Name}"
 					   Margin="5 5 5 5" HorizontalAlignment="Center"
-					   TextAlignment="Center" Opacity="0.8"
+					   TextAlignment="Center" Opacity="1"
 					   FontFamily="Segoe UI"
-					   FontSize="14"
-                        Foreground="Black"
+					   FontSize="16"
 					   VerticalAlignment="Center">
+
+                    <TextBlock.Foreground>
+                        <Binding Path="IsSelected" 
+							 RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}"
+							 Converter="{StaticResource BoolToParameterConditionalConverter}"
+							 ConverterParameter="#FFFFFF:#027EFF" />
+                    </TextBlock.Foreground>
 
                 </TextBlock>
             </Grid>

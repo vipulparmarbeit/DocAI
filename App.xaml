@@ -2,7 +2,8 @@
   <Application.Resources>
     <ResourceDictionary>
       <converters:BoolToParameterConditionalConverter x:Key="BoolToParameterConditionalConverter" />
-      <ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Themes/ListBoxStyle.xaml">
         </ResourceDictionary>
       </ResourceDictionary.MergedDictionaries>

@@ -46,6 +46,7 @@ namespace DoctorAI.AppModels
             else if (speechToTextApiType == SpeechToTextApiType.Type2) type = "type_2";
             else if (speechToTextApiType == SpeechToTextApiType.Type3) type = "type_3";
             else if (speechToTextApiType == SpeechToTextApiType.Type4) type = "type_4";
+            else if (speechToTextApiType == SpeechToTextApiType.Type6) type = "type_6";
             return type;
         }
     }
@@ -57,6 +58,7 @@ namespace DoctorAI.AppModels
         SpeechToTextApiCall_Submit, //Type 4
         ResponseCollectorApiCall, // multi question or single question for symptoms
         MultiquestionApiCall,
+        SweetAlert,
     }
 
     public enum ActionStatus
@@ -68,8 +70,15 @@ namespace DoctorAI.AppModels
     public enum SpeechToTextApiType
     {
         Type1, //Symptom entry in chatbot
-        Type2, // Yes or No to Question
-        Type3, //
-        Type4  //Symptom Submission
+        Type2, // Yes or No to Question in symptom
+        Type3, // Mark Yes or no for question in diagnostic 
+        Type4,  //Symptom Submission
+        Type6  //sweet alert
+    }
+
+    public enum MicControl
+    {
+        Application,
+        User
     }
 }

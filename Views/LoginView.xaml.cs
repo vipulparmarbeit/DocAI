@@ -1,5 +1,7 @@
 ﻿using DoctorAI.AppModels;
+using DoctorAI.Logging;
 using DoctorAI.RestAPI;
+using DoctorAI.SpeechToText;
 using DoctorAI.ViewModel;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Win32;
@@ -10,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
@@ -44,6 +47,7 @@ namespace DoctorAI.Views
             this.Top = y;
             this.Topmost = true;
             this.DataContext = vm;
+            vm.LoginAs = vm.LoginModes.FirstOrDefault(z => z.EnumName == LoginModeEnum.Patient);
         }
 
         public void GetLoginDomains()
@@ -65,7 +69,7 @@ namespace DoctorAI.Views
             }
         }
 
-        bool LoginToApi()
+       private bool  LoginToApi()
         {
             try
             {
@@ -80,10 +84,26 @@ namespace DoctorAI.Views
 
                 string postData = "username=" + vm.UserName + "&password=" + vm.Password + "&url=" + vm.SelectedDomain.url;
 
-                string apiResponse = RestApiClient.POST(url, DocAIAppContext.CONTENT_TYPE_x_www_form_urlencoded, postData);
-                loginApiResponse = new JavaScriptSerializer().Deserialize<LoginApiResponse>(apiResponse);
+                MainWindow.baseURL = "https://" + vm.SelectedDomain.url;
 
-                isloginSuccess = loginApiResponse.result_type.Equals("success");
+                Logger.Log("LOGIN API CALL");
+                Logger.Log("----------------------------------------------------------------------------------------");
+                Logger.Log(string.Format("URL:{0}", url));
+                Logger.Log(string.Format("Request body:{0}", postData));
+                int trail = 0;
+                string apiResponse = string.Empty;
+                do
+                {
+                    Logger.Log(string.Format("Attempt # :{0}", trail + 1));
+                    apiResponse = RestApiClient.POST(url, DocAIAppContext.CONTENT_TYPE_x_www_form_urlencoded, postData);
+                    Logger.Log(string.Format("Response :{0}", apiResponse));
+                    loginApiResponse = new JavaScriptSerializer().Deserialize<LoginApiResponse>(apiResponse);
+                    trail = trail + 1;
+                    isloginSuccess = loginApiResponse.result_type.Equals("success");
+                    Thread.Sleep(1000);
+                } while (!isloginSuccess && trail <= 5);
+                Logger.Log("----------------------------------------------------------------------------------------");
+               
                 if (!isloginSuccess) loginApiResponse = null;
                 return isloginSuccess;
             }
@@ -102,11 +122,27 @@ namespace DoctorAI.Views
 
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
+            Login();
+        }
+
+        private void BtnShowDisclaimer_Click(object sender, RoutedEventArgs e)
+        {
+            vm.IsDisclaimerVisible = true;
+            vm.ErrorMessage = string.Empty;
+        }
+        private void btnDisclaimerCancel_Click(object sender, RoutedEventArgs e)
+        {
+            vm.IsDisclaimerVisible = false;
+        }
+        
+        void Login()
+        {
             if (vm.SelectedDomain != null)
             {
                 bool isSucceess = LoginToApi();
                 if (isSucceess)
                 {
+                    vm.ErrorMessage = string.Empty;
                     RegistryKey appRegKey = Registry.CurrentUser.OpenSubKey(DocAIAppContext.APP_REGISTRY_ENTRY_KEY);
                     if (appRegKey == null)
                     {
@@ -121,18 +157,16 @@ namespace DoctorAI.Views
                         key.SetValue("text", loginApiResponse.text);
                         key.SetValue("baseUrl", "https://" + vm.SelectedDomain.url);
                         key.Close();
-                    //    PolicyForm frmPolicy = new PolicyForm(objcloud.redirect_url);
-                       // frmPolicy.ShowDialog();
-                      
+
                     }
                     this.Hide();
                     System.Diagnostics.Process.Start(loginApiResponse.redirect_url);
                     Messenger.Default.Send<LoginApiResponse>(loginApiResponse);
+                    vm.IsDisclaimerVisible = false;
                 }
                 else
-                    MessageBox.Show("Logging failed");
+                    vm.ErrorMessage = "Logging failed";
             }
-         
         }
 
         private void BtnCancle_Click(object sender, RoutedEventArgs e)
@@ -140,6 +174,4 @@ namespace DoctorAI.Views
             this.Hide();
         }
     }
-
-
 }

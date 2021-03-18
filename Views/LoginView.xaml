@@ -8,7 +8,6 @@
         WindowStyle="None"
         Title="" Height="500" Width="800">
     <Grid Background="#f4f4f4">
-
         <Border Margin="0" Padding="0" HorizontalAlignment="Center" Background="White">
             <Grid  >
 
@@ -90,28 +89,64 @@
                     <StackPanel HorizontalAlignment="Stretch" Grid.Row="2" Orientation="Vertical" >
                         <TextBlock  Margin="0,0,0,4" Text="USER NAME" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#333333" />
                         <!--<Rectangle Height="1"  Margin="0,4,0,0"  HorizontalAlignment="Stretch" Fill="Gray" />-->
-                        <TextBox  Grid.Column="0" FontSize="18" HorizontalAlignment="Left" MinWidth="400" FontWeight="SemiBold" Text="{Binding UserName}" MinHeight="35"/>
+                        <TextBox  Grid.Column="0" BorderBrush="#027EFF"  FontSize="18" HorizontalAlignment="Left" MinWidth="400" FontWeight="SemiBold" Text="{Binding UserName}" MinHeight="35"/>
                     </StackPanel>
                 </Border>
                 <Border Grid.Column="0" Grid.Row="4"  BorderBrush="Gray"  Margin="0,8,0,0" BorderThickness="0"  Padding="5" Background="Transparent" >
                     <StackPanel HorizontalAlignment="Stretch" Grid.Row="2" Orientation="Vertical" >
-                        <TextBlock  Margin="0,0,0,4" Text="PASSWORD" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#333333" />
+                        <TextBlock  Margin="0,0,0,4"  Text="PASSWORD" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#333333" />
                         <!--<Rectangle Height="1"  Margin="0,4,0,0"  HorizontalAlignment="Stretch" Fill="Gray" />-->
-                        <PasswordBox  Grid.Column="0" FontSize="18" HorizontalAlignment="Left" MinWidth="400" FontWeight="SemiBold" PasswordChar="*" PasswordChanged="PasswordBox_PasswordChanged" MinHeight="35"/>
+                        <PasswordBox BorderBrush="#027EFF"   Grid.Column="0" FontSize="18" HorizontalAlignment="Left" MinWidth="400" FontWeight="SemiBold" PasswordChar="*" PasswordChanged="PasswordBox_PasswordChanged" MinHeight="35"/>
                     </StackPanel>
                 </Border>
                 <Border Grid.Column="0" Grid.Row="5"  BorderBrush="Gray"  Margin="0,8,0,0" BorderThickness="0"  Padding="5" Background="Transparent" >
                     <StackPanel HorizontalAlignment="Stretch" Grid.Row="2" Orientation="Horizontal" >
-                        <Button  Background="#027EFF" Foreground="White" Width="150" Height="35" HorizontalAlignment="Left" FontFamily="Helvetica" Click="BtnLogin_Click"  FontSize="18" Name="btnLogin" Content="LOGIN"/>
-                        <Button Margin="8,0,0,0" Background="#E2E3E3" Foreground="Black" Height="35" Width="150" HorizontalAlignment="Left" FontFamily="Helvetica" Click="BtnCancle_Click"  FontSize="18" Name="btnCancel" Content="CANCEL"/>
+                        <Button  Background="#027EFF" Foreground="White" VerticalContentAlignment="Center" FontWeight="SemiBold" Width="150" Height="40" HorizontalAlignment="Left" FontFamily="Helvetica" Click="BtnShowDisclaimer_Click"  FontSize="18" Name="btnLogin" Content="LOGIN"/>
+                        <Button Margin="8,0,0,0" Background="#E2E3E3" FontWeight="SemiBold" VerticalContentAlignment="Center" Foreground="Black" Height="40" Width="150" HorizontalAlignment="Left" FontFamily="Helvetica" Click="BtnCancle_Click"  FontSize="18" Name="btnCancel" Content="CANCEL"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border Margin="0" Padding="0" HorizontalAlignment="Center" Visibility="{Binding IsDisclaimerVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="White">
+            <Grid  >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" Height="40" BorderBrush="Gray"  Margin="0,5,0,0" BorderThickness="0"  Padding="5" Background="#027EFF" >
+                    <TextBlock Text="MEDICAL DISCLAIMER" VerticalAlignment="Center" Foreground="White"  FontFamily="Helvetica"  FontSize="20"/>
+                </Border>
+                <Border Grid.Column="0" Grid.Row="1"  BorderBrush="Gray"  Margin="0,5,0,0" BorderThickness="0"  Padding="5" Background="Transparent" >
+                    <StackPanel HorizontalAlignment="Stretch" Grid.Row="2" Orientation="Vertical" >
+                        <TextBlock  Margin="0,0,0,0" Text="{Binding DisclaimerText}" FontSize="14" TextWrapping="Wrap" MaxWidth="800" MinHeight="300" FontWeight="SemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#333333" />
+                      
                     </StackPanel>
                 </Border>
 
+                <Border Grid.Column="0" Grid.Row="2"  BorderBrush="Gray"  Margin="0,5,0,0" BorderThickness="0"  Padding="5" Background="Transparent" >
+                    <StackPanel HorizontalAlignment="Stretch" Grid.Row="2" Orientation="Horizontal" >
+                        <TextBlock Text="Agree" VerticalAlignment="Center"  FontFamily="Helvetica"  FontSize="15"/>
+                        <CheckBox Margin="5,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold" FontFamily="Helvetica" FontSize="15" IsChecked="{Binding IsAgreed}" />
+                        <TextBlock  Margin="50,0,0,0" Text="{Binding ErrorMessage}" FontSize="15" TextWrapping="Wrap"  FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red" />
+                    </StackPanel>
+                </Border>
 
-
+                <Border Grid.Column="0" Grid.Row="3"  BorderBrush="Gray"  Margin="0,8,0,0" BorderThickness="0"  Padding="5" Background="Transparent" >
+                    <StackPanel HorizontalAlignment="Stretch" Grid.Row="2" Orientation="Horizontal" >
+                        <Button  Background="#027EFF" Foreground="White" VerticalContentAlignment="Center" FontWeight="SemiBold" Width="150" Height="40" HorizontalAlignment="Left"  FontFamily="Helvetica" Click="BtnLogin_Click"  FontSize="18" Name="btnSubmit" Content="SUBMIT"/>
+                        <Button Margin="8,0,0,0" Background="#E2E3E3" FontWeight="SemiBold" VerticalContentAlignment="Center" Foreground="Black" Height="40" Width="150" HorizontalAlignment="Left" FontFamily="Helvetica" Click="btnDisclaimerCancel_Click"  FontSize="18" Name="btnDisclaimerCancel" Content="CANCEL"/>
+                    </StackPanel>
+                </Border>
+               
             </Grid>
         </Border>
-       
+
     </Grid>
    
 </Window>

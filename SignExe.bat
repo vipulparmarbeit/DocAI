@@ -1,0 +1,1 @@
+signtool sign /a /t http://timestamp.digicert.com D:\Projects\Others\UP\Github-DocAi\Setup\bin\DoctorAi.exe

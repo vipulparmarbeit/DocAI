@@ -15,6 +15,8 @@ namespace DoctorAI.ViewModel
         /// </summary>
         public LoginViewModel()
         {
+            IsDisclaimerVisible = false;
+            IsAgreed = true;
             LoginDomainList = new ObservableCollection<LoginDomain>();
             LoginModes = new List<LoginMode>();
             LoginModes.Add(new LoginMode { Name = "Doctor", EnumName = LoginModeEnum.Doctor });
@@ -44,6 +46,31 @@ namespace DoctorAI.ViewModel
             }
         }
 
+        public string DisclaimerText
+        {
+            get { return DocAIAppContext.MEDICAL_DISCLAIMER; }
+        }
+        bool _isDisclaimerVisible;
+        public bool IsDisclaimerVisible
+        {
+            get { return _isDisclaimerVisible; }
+            set
+            {
+                _isDisclaimerVisible = value;
+                RaisePropertyChanged(() => IsDisclaimerVisible);
+            }
+        }
+        bool _isAgreed;
+        public bool IsAgreed
+        {
+            get { return _isAgreed; }
+            set
+            {
+                _isAgreed = value;
+                RaisePropertyChanged(() => IsAgreed);
+            }
+        }
+        //
         LoginMode loginAs;
         public LoginMode LoginAs
         {
@@ -63,6 +90,18 @@ namespace DoctorAI.ViewModel
             {
                 selectedDomain = value;
                 RaisePropertyChanged(() => SelectedDomain);
+            }
+        }
+
+
+        string errorMessage;
+        public string ErrorMessage
+        {
+            get { return errorMessage; }
+            set
+            {
+                errorMessage = value;
+                RaisePropertyChanged(() => ErrorMessage);
             }
         }
 

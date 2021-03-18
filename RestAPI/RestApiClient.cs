@@ -10,7 +10,7 @@ namespace DoctorAI.RestAPI
 {
     public class RestApiClient
     {
-        public static string POST(string URL, string ContentType, string bodyData = "")
+        public static string POSTOLD(string URL, string ContentType, string bodyData = "")
         {
             string response = string.Empty;
             WebRequest request = WebRequest.Create(URL);
@@ -33,7 +33,7 @@ namespace DoctorAI.RestAPI
             return response;
         }
 
-        public static string POST1(string URL, string ContentType, string bodyData = "")
+        public static string POST(string URL, string ContentType, string bodyData = "")
         {
             string response = string.Empty;
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(URL);
