@@ -26,7 +26,7 @@ using DoctorAI.ViewModel;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using System.Diagnostics;
-
+using System.Windows.Automation;
 
 namespace DoctorAI.SpeechToText
 {
@@ -858,7 +858,24 @@ namespace DoctorAI.SpeechToText
                     {
                         // title = Process.GetProcessById(id).MainWindowTitle.Replace(" - Google Chrome", "");
                         title = Process.GetProcessById(id).MainWindowTitle;
-                       var p = Process.GetProcessById(id);
+                        var process = Process.GetProcessById(id);
+                        AutomationElement root = AutomationElement.FromHandle(process.MainWindowHandle);
+                        var SearchBar = root.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, "Address and search bar"));
+                        if(SearchBar != null)
+                        {
+                            bool valuePatternExist = (bool)SearchBar.GetCurrentPropertyValue(AutomationElement.IsValuePatternAvailableProperty);
+                            if (valuePatternExist)
+                            {
+                                ValuePattern val = SearchBar.GetCurrentPattern(ValuePattern.Pattern) as ValuePattern;
+                                if (val.Current.Value.Contains("chat-bot.php"))
+                                {
+                                    System.Windows.Forms.SendKeys.SendWait("^{w}"); // close tab.
+                                    isdone = true;
+                                    Thread.Sleep(100);
+                                }
+                            }
+                        }
+                        /*
                         if (title.ToLower().Contains("doctor ai") ||
                             title.ToLower().Contains("ddxrx") ||
                             title.ToLower().Contains("human anatomy"))
@@ -868,6 +885,7 @@ namespace DoctorAI.SpeechToText
                             isdone = true;
                             Thread.Sleep(100);
                         }
+                        */
                         next++;
                         System.Windows.Forms.SendKeys.SendWait("^{TAB}"); // change focus to next tab
                         Thread.Sleep(100);
